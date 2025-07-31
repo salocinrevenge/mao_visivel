@@ -19,7 +19,7 @@ class Motor():
         self.jogo = Jogo()
         # Criar a janela
         self.screen = pygame.display.set_mode((self.WINDOW_WIDTH, self.WINDOW_HEIGHT), pygame.RESIZABLE)
-        pygame.display.set_caption("Mão visível") # titulo da janela
+        pygame.display.set_caption("Mão visível - Monopoly") # titulo da janela
 
 
     async def run(self):
