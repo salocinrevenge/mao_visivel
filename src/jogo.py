@@ -5,6 +5,7 @@ class Jogo:
     def __init__(self):
         self.cenas = []
         self.cena_atual = None
+        
         self.adicionar_cena(Tabuleiro())
         self.camera = Camera()
 

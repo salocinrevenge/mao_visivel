@@ -10,10 +10,10 @@ class Motor():
 
         # Definir as dimensões da janela
         dimensoes = pygame.display.get_desktop_sizes()[0]
-        self.WINDOW_WIDTH = dimensoes[0] * 0.7
-        self.WINDOW_WIDTH = 1000
-        self.WINDOW_HEIGHT = dimensoes[1] * 0.7
-        self.WINDOW_HEIGHT = 600+100
+        self.WINDOW_WIDTH = dimensoes[0]
+        # self.WINDOW_WIDTH = 1000
+        self.WINDOW_HEIGHT = dimensoes[1]
+        # self.WINDOW_HEIGHT = 600+100
         self.FPS_PADRAO = 60.0
         self.UPDATE_CAP = 1.0/self.FPS_PADRAO
         self.jogo = Jogo()
@@ -106,4 +106,6 @@ class Motor():
     def dispose(self):      # metodo chamado quando o jogo fecha
             pass
 
-Motor()
+
+if __name__ == "__main__":
+    Motor()

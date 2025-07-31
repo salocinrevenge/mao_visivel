@@ -1,11 +1,13 @@
 from src.jogador import Jogador
 from src.terreno import Terreno
+import os
 
 class Tabuleiro:
     def __init__(self):
         self.reset()
 
     def reset(self):
+        
         self.jogadores = [Jogador(f"Jogador {i+1}") for i in range(4)]  # Exemplo com 4 jogadores
         self.cartas = []
         self.terrenos = []
@@ -37,11 +39,16 @@ class Tabuleiro:
         # Lógica para criar terrenos a partir de um arquivo
         try:
             with open(path, "r") as file:
-                for i, linha in enumerate(file):
-                    adicionando = linha.strip().split(" ")
+                i = -1
+                for linha in file:
+                    i += 1
+                    adicionando = linha.strip()
                     if adicionando:  # Ignorar linhas vazias
-                        print(f"Adicionando terreno: {adicionando}")
+                        adicionando = adicionando.split(" ")
                         self.terrenos.append(Terreno(*adicionando, i, self))
+                    else:
+                        i -= 1  # Não contar linhas vazias
+
         except FileNotFoundError:
             print("Arquivo de terrenos não encontrado.")
         
