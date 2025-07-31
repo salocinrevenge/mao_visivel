@@ -14,7 +14,12 @@ class Tabuleiro:
         self.vez = 0
         self.dims = (11,11)
 
+        self.escala = 0.22
+        self.menor_dim_imagens = (540-200) * self.escala
+
         self.criar_terrenos("mapas/minecraft1.txt")
+
+        self.contador = 0
 
     def adicionar_jogador(self, jogador):
         self.jogadores.append(jogador)
@@ -25,11 +30,16 @@ class Tabuleiro:
 
     def tick(self):
         # Atualizar o estado do tabuleiro
+        self.contador +=1
         pass
 
     def render(self, screen, camera):
         # Renderizar o tabuleiro e os jogadores na tela
+        i = 0
         for terreno in self.terrenos:
+            i += 1
+            if self.contador / 10 < i:
+                continue
             terreno.render(screen, camera)
         for jogador in self.jogadores:
             jogador.render(screen, camera)
@@ -45,7 +55,7 @@ class Tabuleiro:
                     adicionando = linha.strip()
                     if adicionando:  # Ignorar linhas vazias
                         adicionando = adicionando.split(" ")
-                        self.terrenos.append(Terreno(*adicionando, i, self))
+                        self.terrenos.append(Terreno(*adicionando, i, self, self.escala))
                     else:
                         i -= 1  # Não contar linhas vazias
 
@@ -55,4 +65,5 @@ class Tabuleiro:
 
     def input(self, event):
         # Processar eventos de entrada, como cliques ou teclas pressionadas
-        pass
+        for terreno in self.terrenos:
+            terreno.input(event)
