@@ -7,7 +7,7 @@ class Jogo:
         self.cena_atual = None
         
         self.adicionar_cena(Tabuleiro())
-        self.camera = Camera()
+        
 
     def adicionar_cena(self, cena):
         self.cenas.append(cena)
@@ -20,7 +20,7 @@ class Jogo:
 
     def render(self, screen):
         if self.cena_atual:
-            self.cena_atual.render(screen, self.camera)
+            self.cena_atual.render(screen)
 
     def input(self, event):
         if self.cena_atual:

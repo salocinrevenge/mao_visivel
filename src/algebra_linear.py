@@ -1,8 +1,5 @@
-def calcular_posicao_absoluta(posicao_relativa_absoluta, dim_bloco):
-    # Calcula a posição isométrica para plotar na tela
-    x = (posicao_relativa_absoluta[0] - posicao_relativa_absoluta[1]) * (dim_bloco[0] // 2)
-    y = (posicao_relativa_absoluta[0] + posicao_relativa_absoluta[1]) * (dim_bloco[1] // 2)
-    return [x, y]
+def toIsometric(x,y):
+    return (x-y, (x+y)/2)
 
 def obter_posicao_relativa_absoluta(posicao_relativa_unidimensional, dim_tabuleiro):
     """

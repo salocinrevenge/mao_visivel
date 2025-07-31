@@ -1,6 +1,6 @@
 from src.jogador import Jogador
 from src.terreno import Terreno
-import os
+from src.camera import Camera
 
 class Tabuleiro:
     def __init__(self):
@@ -14,12 +14,11 @@ class Tabuleiro:
         self.vez = 0
         self.dims = (11,11)
 
-        self.escala = 0.22
-        self.menor_dim_imagens = (540-200) * self.escala
+        self.escala = 0.25
+        self.camera = Camera([1000,0], self.escala)
 
         self.criar_terrenos("mapas/minecraft1.txt")
 
-        self.contador = 0
 
     def adicionar_jogador(self, jogador):
         self.jogadores.append(jogador)
@@ -30,19 +29,18 @@ class Tabuleiro:
 
     def tick(self):
         # Atualizar o estado do tabuleiro
-        self.contador +=1
         pass
 
-    def render(self, screen, camera):
+    def render(self, screen):
         # Renderizar o tabuleiro e os jogadores na tela
-        i = 0
-        for terreno in self.terrenos:
-            i += 1
-            if self.contador / 10 < i:
-                continue
-            terreno.render(screen, camera)
+
+        for i in range(len(self.terrenos)//2, 0, -1):
+
+            self.terrenos[i].render(screen, self.camera)
+            self.terrenos[-i].render(screen, self.camera)
+        self.terrenos[0].render(screen, self.camera)  # Renderizar o terreno central
         for jogador in self.jogadores:
-            jogador.render(screen, camera)
+            jogador.render(screen, self.camera)
         pass
 
     def criar_terrenos(self, path):
@@ -64,6 +62,4 @@ class Tabuleiro:
         
 
     def input(self, event):
-        # Processar eventos de entrada, como cliques ou teclas pressionadas
-        for terreno in self.terrenos:
-            terreno.input(event)
+        pass

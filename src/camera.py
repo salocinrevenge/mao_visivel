@@ -1,13 +1,20 @@
+from src.algebra_linear import toIsometric
+import pygame
+
 class Camera():
-    def __init__(self):
-        self.x = -1000
-        self.y = -50
+    def __init__(self, pos, escala) -> None:
+        self.x = pos[0]
+        self.y = pos[1]
+        self.target = None
+        self.escala = (1/escala)
 
-    def move(self, dx, dy):
-        self.x += dx
-        self.y += dy
+    def tick(self):
+        pass
+    
+    def render(self, screen, imagem, pos):
+        x,y = toIsometric(pos[0], pos[1])
+        screen.blit(imagem, (x * 16 * self.escala + self.x, y * 16 * self.escala + self.y))
 
-    def render(self, screen, image, pos):
-        # Ajustar a posição da câmera na tela
-        adjusted_pos = (pos[0] - self.x, pos[1] - self.y)
-        screen.blit(image, adjusted_pos)
+
+    def input(self, evento):
+        pass

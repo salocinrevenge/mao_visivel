@@ -1,5 +1,5 @@
 import pygame
-from src.algebra_linear import calcular_posicao_absoluta, obter_posicao_relativa_absoluta
+from src.algebra_linear import obter_posicao_relativa_absoluta
 
 class Terreno:
     def __init__(self, tipo, grupo, bioma, numero, pos, tabueiro, escala):
@@ -14,9 +14,7 @@ class Terreno:
         self.espelhar = True
         if self.pos_2d[1] == 0 or self.pos_2d[1] == tabueiro.dims[1]-1:
             self.espelhar = False
-        self.dim = (540*self.escala ,800*self.escala)
         self.carregar_imagem()
-        self.absolut_pos = calcular_posicao_absoluta(self.pos_2d, self.dim)
 
     def carregar_imagem(self):
         # Lógica para carregar a imagem do terreno com base no tipo e grupo
@@ -24,15 +22,11 @@ class Terreno:
         # self.imagem = pygame.image.load(f"imgs/{self.tipo}_{self.grupo}.png")
 
 
-        self.imagem = pygame.image.load(f"imgs/bases/base.png")
-        if self.tipo == "QUINA":
-            self.imagem = pygame.image.load(f"imgs/bases/base_quina.png")
+        self.imagem = pygame.image.load(f"imgs/bases/new_base.png")
         original_size = self.imagem.get_size()
         self.dim = [original_size[0] * self.escala, original_size[1] * self.escala]
 
         self.imagem = pygame.transform.scale(self.imagem, self.dim)
-        self.dim[0] *=0.6
-        self.dim[1] *=0.4
         if self.espelhar:
             self.imagem = pygame.transform.flip(self.imagem, True, False)
 
@@ -48,4 +42,4 @@ class Terreno:
 
 
 
-        camera.render(screen, self.imagem, self.absolut_pos)
+        camera.render(screen, self.imagem, self.pos_2d)
