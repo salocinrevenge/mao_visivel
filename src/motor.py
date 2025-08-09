@@ -16,10 +16,11 @@ class Motor():
         # self.WINDOW_HEIGHT = 600+100
         self.FPS_PADRAO = 60.0
         self.UPDATE_CAP = 1.0/self.FPS_PADRAO
-        self.jogo = Jogo()
         # Criar a janela
         self.screen = pygame.display.set_mode((self.WINDOW_WIDTH, self.WINDOW_HEIGHT), pygame.RESIZABLE)
         pygame.display.set_caption("Mão visível - Monopoly") # titulo da janela
+        
+        self.jogo = Jogo()
 
 
     async def run(self):

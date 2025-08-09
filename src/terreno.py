@@ -1,19 +1,17 @@
 import pygame
-from src.algebra_linear import obter_posicao_relativa_absoluta
 
 class Terreno:
-    def __init__(self, tipo, grupo, bioma, numero, pos, tabueiro, escala):
-        self.tipo = tipo
-        self.grupo = grupo
-        self.bioma = bioma
-        self.numero = numero
+    def __init__(self, pos, tema, tipo, categoria = None, bioma = None, tabuleiro = None):
         self.pos = pos
-        self.tabuleiro = tabueiro
-        self.escala = escala  # Escala para reduzir o tamanho da imagem
-        self.pos_2d = obter_posicao_relativa_absoluta(pos, tabueiro.dims)
-        self.espelhar = True
-        if self.pos_2d[1] == 0 or self.pos_2d[1] == tabueiro.dims[1]-1:
-            self.espelhar = False
+        self.tipo = tipo
+        self.tema = tema
+        self.bioma = bioma
+        self.categoria = categoria
+        if tabuleiro is None:
+            assert Exception("Tabuleiro deve ser passado para terreno")
+        self.loaderImages = tabuleiro.loaderImages 
+        self.tabuleiro = tabuleiro
+        self.escala = 1
         self.carregar_imagem()
 
     def carregar_imagem(self):
@@ -21,16 +19,7 @@ class Terreno:
         # print(f"Carregando imagem: imgs/{self.tipo}_{self.grupo}.png")
         # self.imagem = pygame.image.load(f"imgs/{self.tipo}_{self.grupo}.png")
 
-
-        self.imagem = pygame.image.load(f"imgs/bases/new_base.png")
-        original_size = self.imagem.get_size()
-        self.dim = [original_size[0] * self.escala, original_size[1] * self.escala]
-
-        self.imagem = pygame.transform.scale(self.imagem, self.dim)
-        if self.espelhar:
-            self.imagem = pygame.transform.flip(self.imagem, True, False)
-
-
+        self.imagem_ID = self.loaderImages.get_image_ID(f"imgs/bases/new_base.png")
 
     def tick(self):
         # Lógica para atualizar o estado do terreno, se necessário
@@ -42,4 +31,4 @@ class Terreno:
 
 
 
-        camera.render(screen, self.imagem, self.pos_2d)
+        camera.render(screen, self, self.pos)

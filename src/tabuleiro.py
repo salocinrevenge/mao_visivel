@@ -1,6 +1,8 @@
 from src.jogador import Jogador
 from src.terreno import Terreno
 from src.camera import Camera
+from src.loader_images import loaderImages
+import pygame
 
 class Tabuleiro:
     def __init__(self):
@@ -12,10 +14,11 @@ class Tabuleiro:
         self.cartas = []
         self.terrenos = []
         self.vez = 0
-        self.dims = (11,11)
+        self.loaderImages = loaderImages(escala=1)
 
-        self.escala = 0.25
-        self.camera = Camera([1000,0], self.escala)
+        self.window_dim = pygame.display.get_window_size()
+        escala = 0.3
+        self.camera = Camera([0,-self.window_dim[1]/(2*escala)], self.loaderImages, escala=escala)
 
         self.criar_terrenos("mapas/minecraft1.txt")
 
@@ -29,37 +32,57 @@ class Tabuleiro:
 
     def tick(self):
         # Atualizar o estado do tabuleiro
-        pass
+        self.camera.tick()
 
     def render(self, screen):
         # Renderizar o tabuleiro e os jogadores na tela
 
-        for i in range(len(self.terrenos)//2, 0, -1):
-
-            self.terrenos[i].render(screen, self.camera)
-            self.terrenos[-i].render(screen, self.camera)
-        self.terrenos[0].render(screen, self.camera)  # Renderizar o terreno central
+        for terreno in self.terrenos:
+            terreno.render(screen, self.camera)
         for jogador in self.jogadores:
             jogador.render(screen, self.camera)
-        pass
 
     def criar_terrenos(self, path):
         # Lógica para criar terrenos a partir de um arquivo
         try:
             with open(path, "r") as file:
+                estado = None
+                possiveis_estados = set(["TEMA", "SIMBOLOS", "TERRENOS", "MAPA"])
+                tema = None
+                simbolos = dict()
+                sequencia_terrenos = []
                 i = -1
                 for linha in file:
-                    i += 1
                     adicionando = linha.strip()
                     if adicionando:  # Ignorar linhas vazias
                         adicionando = adicionando.split(" ")
-                        self.terrenos.append(Terreno(*adicionando, i, self, self.escala))
-                    else:
-                        i -= 1  # Não contar linhas vazias
+                        if len(adicionando) == 1 and adicionando[0] in possiveis_estados:
+                            estado = adicionando[0]
+                            continue
+                        match estado:
+                            case "TEMA":
+                                tema = adicionando[0]
+                            case "SIMBOLOS":
+                                simbolos[adicionando[0]] = adicionando[1]
+                            case "TERRENOS":
+                                sequencia_terrenos.append((adicionando[0], adicionando[1]))
+                            case "MAPA":
+                                i+=1
+                                j=-1
+                                for letra in adicionando[0]:
+                                    j+=1
+                                    tipo = simbolos[letra]
+                                    if tipo == "TERRENO":
+                                        terreno_atual = sequencia_terrenos.pop(0)
+                                        self.terrenos.append(Terreno(pos = [i,j], tema = tema, tipo = tipo, categoria = terreno_atual[0], bioma = terreno_atual[1], tabuleiro = self))
+                                    else:
+                                        self.terrenos.append(Terreno(pos = [i,j], tema = tema, tipo = tipo, tabuleiro = self))
+                            case _:
+                                pass
 
         except FileNotFoundError:
             print("Arquivo de terrenos não encontrado.")
         
 
     def input(self, event):
-        pass
+        self.camera.input(event)
