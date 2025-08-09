@@ -1,2 +1,2 @@
 def toIsometric(x,y):
-    return (x-y, (x+y)/2)
+    return (x+y, (x-y)/2)

@@ -18,7 +18,7 @@ class Tabuleiro:
 
         self.window_dim = pygame.display.get_window_size()
         escala = 0.3
-        self.camera = Camera([0,-self.window_dim[1]/(2*escala)], self.loaderImages, escala=escala)
+        self.camera = Camera([-self.window_dim[0],-self.window_dim[1]*(escala)], self.loaderImages, escala=escala)
 
         self.criar_terrenos("mapas/minecraft1.txt")
 
@@ -37,51 +37,64 @@ class Tabuleiro:
     def render(self, screen):
         # Renderizar o tabuleiro e os jogadores na tela
 
-        for terreno in self.terrenos:
-            terreno.render(screen, self.camera)
+        # Renderizar terrenos seguindo a diagonal secundária (de cima para baixo)
+        linhas = len(self.terrenos)
+        colunas = len(self.terrenos[0])
+
+        for coluna_atual in range(colunas - 1, -1, -1):
+            i, j = 0, coluna_atual
+            while i < linhas and j < colunas:
+                self.terrenos[i][j].render(screen, self.camera)
+                i += 1
+                j += 1
+        for linha_atual in range(1, linhas):
+            i, j = linha_atual, 0
+            while i < linhas and j < colunas:
+                self.terrenos[i][j].render(screen, self.camera)
+                i += 1
+                j += 1
+
         for jogador in self.jogadores:
             jogador.render(screen, self.camera)
 
     def criar_terrenos(self, path):
         # Lógica para criar terrenos a partir de um arquivo
-        try:
-            with open(path, "r") as file:
-                estado = None
-                possiveis_estados = set(["TEMA", "SIMBOLOS", "TERRENOS", "MAPA"])
-                tema = None
-                simbolos = dict()
-                sequencia_terrenos = []
-                i = -1
-                for linha in file:
-                    adicionando = linha.strip()
-                    if adicionando:  # Ignorar linhas vazias
-                        adicionando = adicionando.split(" ")
-                        if len(adicionando) == 1 and adicionando[0] in possiveis_estados:
-                            estado = adicionando[0]
-                            continue
-                        match estado:
-                            case "TEMA":
-                                tema = adicionando[0]
-                            case "SIMBOLOS":
-                                simbolos[adicionando[0]] = adicionando[1]
-                            case "TERRENOS":
-                                sequencia_terrenos.append((adicionando[0], adicionando[1]))
-                            case "MAPA":
-                                i+=1
-                                j=-1
-                                for letra in adicionando[0]:
-                                    j+=1
-                                    tipo = simbolos[letra]
-                                    if tipo == "TERRENO":
-                                        terreno_atual = sequencia_terrenos.pop(0)
-                                        self.terrenos.append(Terreno(pos = [i,j], tema = tema, tipo = tipo, categoria = terreno_atual[0], bioma = terreno_atual[1], tabuleiro = self))
-                                    else:
-                                        self.terrenos.append(Terreno(pos = [i,j], tema = tema, tipo = tipo, tabuleiro = self))
-                            case _:
-                                pass
+        with open(path, "r") as file:
+            estado = None
+            possiveis_estados = set(["TEMA", "SIMBOLOS", "TERRENOS", "MAPA"])
+            tema = None
+            simbolos = dict()
+            sequencia_terrenos = []
+            i = -1
+            for linha in file:
+                adicionando = linha.strip()
+                if adicionando:  # Ignorar linhas vazias
+                    adicionando = adicionando.split(" ")
+                    if len(adicionando) == 1 and adicionando[0] in possiveis_estados:
+                        estado = adicionando[0]
+                        continue
+                    match estado:
+                        case "TEMA":
+                            tema = adicionando[0]
+                        case "SIMBOLOS":
+                            simbolos[adicionando[0]] = adicionando[1]
+                        case "TERRENOS":
+                            sequencia_terrenos.append((adicionando[0], adicionando[1]))
+                        case "MAPA":
+                            i+=1
+                            j=-1
+                            self.terrenos.append([])
+                            for letra in adicionando[0]:
+                                j+=1
+                                tipo = simbolos[letra]
+                                if tipo == "TERRENO":
+                                    terreno_atual = sequencia_terrenos.pop(0)
+                                    self.terrenos[-1].append(Terreno(pos = [i,j], tema = tema, tipo = tipo, categoria = terreno_atual[0], bioma = terreno_atual[1], tabuleiro = self))
+                                else:
+                                    self.terrenos[-1].append(Terreno(pos = [i,j], tema = tema, tipo = tipo, tabuleiro = self))
+                        case _:
+                            pass
 
-        except FileNotFoundError:
-            print("Arquivo de terrenos não encontrado.")
         
 
     def input(self, event):

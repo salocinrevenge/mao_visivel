@@ -18,8 +18,11 @@ class Terreno:
         # Lógica para carregar a imagem do terreno com base no tipo e grupo
         # print(f"Carregando imagem: imgs/{self.tipo}_{self.grupo}.png")
         # self.imagem = pygame.image.load(f"imgs/{self.tipo}_{self.grupo}.png")
+        if self.tipo == "TERRENO" and self.categoria == "COMUM":
+            self.imagem_ID = self.loaderImages.get_image_ID(f"imgs/{self.tema}/{self.bioma}.png")
+        else:
+            self.imagem_ID = self.loaderImages.get_image_ID(f"imgs/bases/new_base.png")
 
-        self.imagem_ID = self.loaderImages.get_image_ID(f"imgs/bases/new_base.png")
 
     def tick(self):
         # Lógica para atualizar o estado do terreno, se necessário
