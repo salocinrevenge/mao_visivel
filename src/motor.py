@@ -10,9 +10,9 @@ class Motor():
 
         # Definir as dimensões da janela
         dimensoes = pygame.display.get_desktop_sizes()[0]
-        self.WINDOW_WIDTH = dimensoes[0]
+        self.WINDOW_WIDTH = dimensoes[0]*0.9
         # self.WINDOW_WIDTH = 1000
-        self.WINDOW_HEIGHT = dimensoes[1]
+        self.WINDOW_HEIGHT = dimensoes[1]*0.9
         # self.WINDOW_HEIGHT = 600+100
         self.FPS_PADRAO = 60.0
         self.UPDATE_CAP = 1.0/self.FPS_PADRAO
@@ -102,6 +102,15 @@ class Motor():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_F11:
+                    if self.screen.get_flags() & pygame.FULLSCREEN:
+                        self.screen = pygame.display.set_mode((self.WINDOW_WIDTH, self.WINDOW_HEIGHT), pygame.RESIZABLE)
+                    else:
+                        self.screen = pygame.display.set_mode((self.WINDOW_WIDTH, self.WINDOW_HEIGHT), pygame.FULLSCREEN)
+                elif event.key == pygame.K_ESCAPE:
+                    if self.screen.get_flags() & pygame.FULLSCREEN:
+                        self.screen = pygame.display.set_mode((self.WINDOW_WIDTH, self.WINDOW_HEIGHT), pygame.RESIZABLE)
             self.jogo.input(event)
 
     def dispose(self):      # metodo chamado quando o jogo fecha

@@ -25,12 +25,12 @@ COMUM cogumelo
 COMUM end
 MULT soul
 MULT crinson
+COMUM mesa
 COMUM cogumelo
 COMUM mesa
-COMUM mesa
+COMUM ancestral
 COMUM ancestral
 COMUM mesa
-COMUM ancestral
 COMUM mesa
 COMUM ancestral
 
