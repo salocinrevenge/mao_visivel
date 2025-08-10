@@ -18,7 +18,8 @@ class Tabuleiro:
 
         self.window_dim = pygame.display.get_window_size()
         escala = 0.3
-        self.camera = Camera([-self.window_dim[0],-self.window_dim[1]*(escala)], self.loaderImages, escala=escala)
+        self.tiles_size = 512
+        self.camera = Camera([-self.window_dim[0],-self.window_dim[1]*(escala)], self.loaderImages, escala=escala, tabuleiro=self)
 
         self.criar_terrenos("mapas/minecraft1.txt")
 
@@ -54,6 +55,19 @@ class Tabuleiro:
                 i += 1
                 j += 1
 
+        for coluna_atual in range(colunas - 1, -1, -1):
+            i, j = 0, coluna_atual
+            while i < linhas and j < colunas:
+                self.terrenos[i][j].renderGUI(screen, self.camera)
+                i += 1
+                j += 1
+        for linha_atual in range(1, linhas):
+            i, j = linha_atual, 0
+            while i < linhas and j < colunas:
+                self.terrenos[i][j].renderGUI(screen, self.camera)
+                i += 1
+                j += 1
+
         for jogador in self.jogadores:
             jogador.render(screen, self.camera)
 
@@ -79,7 +93,7 @@ class Tabuleiro:
                         case "SIMBOLOS":
                             simbolos[adicionando[0]] = adicionando[1]
                         case "TERRENOS":
-                            sequencia_terrenos.append((adicionando[0], adicionando[1]))
+                            sequencia_terrenos.append(adicionando)
                         case "MAPA":
                             i+=1
                             j=-1
@@ -89,7 +103,7 @@ class Tabuleiro:
                                 tipo = simbolos[letra]
                                 if tipo == "TERRENO":
                                     terreno_atual = sequencia_terrenos.pop(0)
-                                    self.terrenos[-1].append(Terreno(pos = [i,j], tema = tema, tipo = tipo, categoria = terreno_atual[0], bioma = terreno_atual[1], tabuleiro = self))
+                                    self.terrenos[-1].append(Terreno(pos = [i,j], tema = tema, tipo = tipo, categoria = terreno_atual[0], bioma = terreno_atual[1], nome= terreno_atual[2], tabuleiro = self))
                                 else:
                                     self.terrenos[-1].append(Terreno(pos = [i,j], tema = tema, tipo = tipo, tabuleiro = self))
                         case _:

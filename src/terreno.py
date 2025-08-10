@@ -1,7 +1,7 @@
 import pygame
 
 class Terreno:
-    def __init__(self, pos, tema, tipo, categoria = None, bioma = None, tabuleiro = None):
+    def __init__(self, pos, tema, tipo, categoria = None, bioma = None, nome = None, tabuleiro = None):
         self.pos = pos
         self.tipo = tipo
         self.tema = tema
@@ -12,6 +12,7 @@ class Terreno:
         self.loaderImages = tabuleiro.loaderImages 
         self.tabuleiro = tabuleiro
         self.escala = 1
+        self.nome = nome
         self.carregar_imagem()
 
     def carregar_imagem(self):
@@ -31,7 +32,12 @@ class Terreno:
 
     def render(self, screen, camera):
         # Lógica para renderizar o terreno na tela
-
-
-
         camera.render(screen, self, self.pos)
+
+
+    def renderGUI(self, screen, camera):
+        mouse_pos = pygame.mouse.get_pos()
+        tile_pos = camera.world_to_screen(self.pos)
+        tile_rect = pygame.Rect(tile_pos[0], tile_pos[1], self.tabuleiro.tiles_size*camera.escala, self.tabuleiro.tiles_size*camera.escala)
+        if tile_rect.collidepoint(mouse_pos):
+            camera.render_terrain_name(screen, self, self.pos)

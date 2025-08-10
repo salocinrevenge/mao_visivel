@@ -11,36 +11,36 @@ P PORTAL
 . LIVRE
 
 TERRENOS
-COMUM jungle
-COMUM jungle
-COMUM jungle
-MULT deltas
-COMUM oceano
-COMUM oceano
-COMUM oceano
+COMUM jungle Casa_na_arvore 
+COMUM jungle Base_secreta
+COMUM jungle Templo
+MULT deltas Base_deltas
+COMUM oceano Base_na_praia
+COMUM oceano Navio_pirata
+COMUM oceano Atlantida
 
-COMUM end
-COMUM cogumelo
-COMUM cogumelo
-COMUM end
-MULT soul
-MULT crinson
-COMUM mesa
-COMUM cogumelo
-COMUM mesa
-COMUM ancestral
-COMUM ancestral
-COMUM mesa
-COMUM mesa
-COMUM ancestral
+COMUM end Cidadela
+COMUM cogumelo Casa_da_vaca_cogumelo
+COMUM cogumelo Base_cogumelo_marrom
+COMUM end Centro_end
+MULT soul Base_soul
+MULT crinson Base_crimson
+COMUM mesa Mina
+COMUM cogumelo Palacio_cogumelo_vermelho
+COMUM mesa Casa_mesa
+COMUM ancestral Casa_produtor
+COMUM ancestral Casa_cientista
+COMUM mesa Casa_mesa
+COMUM mesa Paraiso_velho_oeste
+COMUM ancestral Casa_presidente
 
-COMUM cerejeira
-COMUM cerejeira
-MULT warped
-COMUM cerejeira
-COMUM ice
-COMUM ice
-COMUM ice
+COMUM cerejeira Palacio_do_shogunato
+COMUM cerejeira Centro_convencoes
+MULT warped Base_warped
+COMUM cerejeira Casa_costureira
+COMUM ice Palacio_de_gelo
+COMUM ice Base_nevada
+COMUM ice Iglu
 
 MAPA
 STTETTTTETC
