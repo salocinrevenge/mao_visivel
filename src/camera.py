@@ -1,5 +1,6 @@
 from src.algebra_linear import toIsometric
 import pygame
+from src.algebra_linear import fromIsometric
 
 class Camera():
     def __init__(self, pos, loaderImages, escala, tabuleiro) -> None:
@@ -79,3 +80,8 @@ class Camera():
         pos_final_x = x * ((self.tiles_size//2) + self.desloc_figs_padrao[0]) * self.escala + self.x * self.escala + self.window_dim[0]
         pos_final_y = y * ((self.tiles_size//2) + self.desloc_figs_padrao[1]) * self.escala + self.y * self.escala + self.window_dim[1]
         return (pos_final_x, pos_final_y)
+
+    def screen_to_world(self, pos):
+        x = (pos[0] - self.x * self.escala - self.window_dim[0]) / ((self.tiles_size // 2) + self.desloc_figs_padrao[0]) / self.escala
+        y = (pos[1] - self.y * self.escala - self.window_dim[1]) / ((self.tiles_size // 2) + self.desloc_figs_padrao[1]) / self.escala
+        return fromIsometric(x, y)

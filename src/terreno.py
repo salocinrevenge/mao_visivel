@@ -38,6 +38,7 @@ class Terreno:
     def renderGUI(self, screen, camera):
         mouse_pos = pygame.mouse.get_pos()
         tile_pos = camera.world_to_screen(self.pos)
+        print(f"screen_to pos: {camera.screen_to_world(mouse_pos)}")
         tile_rect = pygame.Rect(tile_pos[0], tile_pos[1], self.tabuleiro.tiles_size*camera.escala, self.tabuleiro.tiles_size*camera.escala)
         if tile_rect.collidepoint(mouse_pos):
             camera.render_terrain_name(screen, self, self.pos)
