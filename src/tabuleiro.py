@@ -93,7 +93,7 @@ class Tabuleiro:
                         case "SIMBOLOS":
                             simbolos[adicionando[0]] = adicionando[1]
                         case "TERRENOS":
-                            sequencia_terrenos.append(adicionando)
+                            sequencia_terrenos.append([x.replace("_", " ") for x in adicionando])
                         case "MAPA":
                             i+=1
                             j=-1
@@ -105,7 +105,10 @@ class Tabuleiro:
                                     terreno_atual = sequencia_terrenos.pop(0)
                                     self.terrenos[-1].append(Terreno(pos = [i,j], tema = tema, tipo = tipo, categoria = terreno_atual[0], bioma = terreno_atual[1], nome= terreno_atual[2], tabuleiro = self))
                                 else:
-                                    self.terrenos[-1].append(Terreno(pos = [i,j], tema = tema, tipo = tipo, tabuleiro = self))
+                                    nome = tipo
+                                    if tipo == "LIVRE":
+                                        nome = None
+                                    self.terrenos[-1].append(Terreno(pos = [i,j], tema = tema, tipo = tipo, tabuleiro = self, nome=nome))
                         case _:
                             pass
 

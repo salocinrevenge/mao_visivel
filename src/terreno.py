@@ -1,4 +1,5 @@
 import pygame
+import math
 
 class Terreno:
     def __init__(self, pos, tema, tipo, categoria = None, bioma = None, nome = None, tabuleiro = None):
@@ -14,6 +15,7 @@ class Terreno:
         self.escala = 1
         self.nome = nome
         self.carregar_imagem()
+        self.animacao_descricao = 0
 
     def carregar_imagem(self):
         # Lógica para carregar a imagem do terreno com base no tipo e grupo
@@ -36,9 +38,14 @@ class Terreno:
 
 
     def renderGUI(self, screen, camera):
-        mouse_pos = pygame.mouse.get_pos()
-        tile_pos = camera.world_to_screen(self.pos)
-        print(f"screen_to pos: {camera.screen_to_world(mouse_pos)}")
-        tile_rect = pygame.Rect(tile_pos[0], tile_pos[1], self.tabuleiro.tiles_size*camera.escala, self.tabuleiro.tiles_size*camera.escala)
-        if tile_rect.collidepoint(mouse_pos):
-            camera.render_terrain_name(screen, self, self.pos)
+        if self.nome:
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_tile_pos = camera.screen_to_world(mouse_pos)
+            if math.ceil(mouse_tile_pos[0]) - 2 == self.pos[0] and math.ceil(mouse_tile_pos[1]) == self.pos[1]:
+                if self.animacao_descricao < 100:
+                    self.animacao_descricao += 20
+                camera.render_terrain_name(screen, self, self.pos, anim = self.animacao_descricao)
+            else:
+                if self.animacao_descricao > 0:
+                    camera.render_terrain_name(screen, self, self.pos, anim = self.animacao_descricao)
+                    self.animacao_descricao -= 20
